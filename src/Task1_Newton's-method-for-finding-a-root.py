@@ -1,22 +1,40 @@
-'''
-1. 通过牛顿法求根，演示函数为func(x) = 3*x**4 + 4*x**3 - 30
-2. 牛顿法通过函数在x0处的一阶泰勒展开找到更好的近似值，即：
-    func(x) = func(x0) + func'(x0)*(x - x0)
-    令func(x) = 0，解得x = x0 - func(x0)/func'(x0)
-3. 导数的计算采用数值方法，使用五点法公式，即：
-    func'(x0) = (func(x0-2h) - 8*func(x0-h) + 8*func(x0+h) - func(x0+2h))/(12*h)
-    其中h为微分步长，程序里取h = 1e-3
-4. 数值微分的方法可以参阅http://en.wikipedia.org/wiki/Numerical_differentiation
-'''
+# A concise python code based tutorial for (mathmatical) optimization
+# https://github.com/sorayng/python-in-optimization-tutorial
+# Contact: Sean Yang - yng(at)outlook.com
 
-def func(x):    # 定义函数
+# Task 1 - Newton's method for finding a root
+# Date: 2014.01.10
+# Description:
+# 1. This routine tries to find a root of a single-variable nonlinear equation,
+#    taking f(x) = 3*x**4 + 4*x**3 - 30 for example.
+# 2. Newton's method iteratively uses first order Taylar approximation to find
+#    better guess of the root, i.e,
+#    f(x) = f(x0) + f'(x0)(x - x0) = 0 --->
+#    x = x0 - f(x0)/f'(x0)
+# 3. For detailed reference, see http://en.wikipedia.org/wiki/Newton's_method
+
+def func(x):
+    ''' define the nonlinear equation '''
     return 3*x**4 + 4*x**3 - 30
 
-def funcgrad(x):    # 求一阶导数
-    h = 1e-3
-    return (func(x-2*h) - 8*func(x-h) + 8*func(x+h) - func(x+2*h))/(12*h)
+def funcgrad(x,h=1e-3):
+    '''
+    Caculate the derivative of f(x), using two-point finite difference formula:
+    f'(x) = (f(x + h) - f(x - h))/2h
+    More information of numerical differentiation, see
+    http://en.wikipedia.org/wiki/Numerical_differentiation
+    '''
+    return (func(x + h) - func(x - h))/2/h
 
-xval = 10    # 给定初值xval = 10
-while abs(func(xval)) > 1e-6:
-    xval = xval - func(xval)/funcgrad(xval)
-    print(xval)
+def find_a_root_newton(x0=100):
+    '''
+    Use Newton's method to find a root, x0 is the initial guess.
+    '''
+    print(x0)
+    x = x0
+    while abs(func(x)) > 1e-6:
+        x = x - func(x)/funcgrad(x)
+        print(x)
+    
+if __name__ == '__main__':
+    find_a_root_newton()
