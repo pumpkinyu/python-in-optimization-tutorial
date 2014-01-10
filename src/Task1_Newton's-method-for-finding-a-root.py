@@ -1,5 +1,6 @@
 # A concise python code based tutorial for (mathmatical) optimization
 # https://github.com/sorayng/python-in-optimization-tutorial
+# Python Version: 3.3.3
 # Contact: Sean Yang - yng(at)outlook.com
 
 # Task 1 - Newton's method for finding a root
